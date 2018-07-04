@@ -6,12 +6,18 @@ A PHP SDK for WeTransfer's Public API
 
 Get Composer. Follow the instructions defined on the official [Composer page](https://getcomposer.org/doc/00-intro.md), or if you are using `homebrew`, just run:
 
-  brew install composer
+```bash
+brew install composer
+```
 
 Install project dependencies:
 
-  composer install
-  
+```bash
+composer install
+```
+
 Run the test suite:
 
+```bash
 ./vendor/bin/phpunit
+```
