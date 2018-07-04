@@ -1,4 +1,4 @@
-# WeTransfer JavaScript SDK
+# WeTransfer PHP SDK
 
 A PHP SDK for WeTransfer's Public API
 
