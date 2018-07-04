@@ -1,0 +1,12 @@
+<phpunit bootstrap="vendor/autoload.php" colors="true" convertErrorsToExceptions="true">
+  <testsuites>
+    <testsuite name="WeTransfer PHP SDK test suite">
+      <directory>./tests</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <blacklist>
+      <directory>./tests</directory>
+    </blacklist>
+  </filter>
+</phpunit>
