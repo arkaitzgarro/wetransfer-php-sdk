@@ -1,12 +1,15 @@
 <?php
 namespace WeTransfer\Http;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
+
 /**
  * This module is responsible to make the final calls to the API.
  *
- * @package WeTransfer\http
+ * @package WeTransfer\Http
  */
-final class ApiRequest
+class ApiRequest
 {
   // @var string Actual version of the API.
   const API_VERSION = 'v1';
@@ -14,37 +17,23 @@ final class ApiRequest
   // @var string The WeTransfer API base path.
   const API_BASE_URL = 'https://dev.wetransfer.com/' . self::API_VERSION;
 
-  // @var string HTTP client.
-  private static $http = null;
+  // @var ClientInterface HTTP client.
+  private $http;
 
   // @var string The WeTransfer API key to be used for requests.
-  private static $apiKey = null;
+  private $apiKey;
 
   // @var string JWT token to be used for requests.
-  private static $jwt = null;
+  private $jwt;
 
   /**
    * Sets the API key to be used for requests.
    *
    * @param string $apiKey
    */
-  public static function setApiKey($apiKey)
+  public function setApiKey($apiKey)
   {
-    if(empty($apiKey)) {
-      throw new InvalidArgumentException('API key value cannot be empty.');
-    }
-
-    self::$apiKey = $apiKey;
-  }
-
-  /**
-   * Gets the API key
-   *
-   * @return string $apiKey
-   */
-  public static function getApiKey()
-  {
-    return self::$apiKey;
+    $this->apiKey = $apiKey;
   }
 
   /**
@@ -52,19 +41,17 @@ final class ApiRequest
    *
    * @param string $jwt
    */
-  public static function setJWT($jwt)
+  public function setJWT($jwt)
   {
     if(empty($jwt)) {
       throw new InvalidArgumentException('JWT value cannot be empty.');
     }
 
-    self::$jwt = $jwt;
+    $this->jwt = $jwt;
   }
 
   /**
    * Makes an HTTP request to the API
-   *
-   * @static
    *
    * @param string $method   HTTP method ('get', 'post', etc.)
    * @param string $endpoint Endpoint for the request
@@ -72,11 +59,10 @@ final class ApiRequest
    *
    * @return array tuple containing (the JSON response, $options)
    */
-  public static function request($method, $endpoint, $params = []) {
-    $client = self::httpClient();
-    $response = $client->request($method, self::API_BASE_URL . $endpoint, [
+  public function request($method, $endpoint, $params = []) {
+    $response = $this->http->request($method, self::API_BASE_URL . $endpoint, [
       'debug' => true,
-      'headers' => self::defaultHeaders(),
+      'headers' => $this->defaultHeaders(),
       'json' => $params
       ]);
 
@@ -84,35 +70,38 @@ final class ApiRequest
   }
 
   /**
-   * Default headers for all HTTP requests
+   * Sets the client to be used for query the API endpoints
    *
-   * @static
+   * @param ClientInterface $client
    *
-   * @return array
+   * @return $this
    */
-  private static function defaultHeaders()
+  public function setHttpClient(ClientInterface $http = null)
   {
-    $defaultHeaders = [
-      'x-api-key' => self::$apiKey,
-      'Content-Type' => 'application/json'
-    ];
-
-    if (self::$jwt !== null) {
-      $defaultHeaders['Authorization'] = 'Bearer ' . self::$jwt;
+    if ($http === null) {
+      $http = new Client();
     }
 
-    return $defaultHeaders;
+    $this->http = $http;
+    return $this;
   }
 
   /**
-   * @return GuzzleHttp\ClientInterface
+   * Default headers for all HTTP requests
+   *
+   * @return array
    */
-  private static function httpClient()
+  private function defaultHeaders()
   {
-    if (!self::$http) {
-      self::$http = new \GuzzleHttp\Client();
+    $defaultHeaders = [
+      'x-api-key' => $this->apiKey,
+      'Content-Type' => 'application/json'
+    ];
+
+    if ($this->jwt !== null) {
+      $defaultHeaders['Authorization'] = 'Bearer ' . $this->jwt;
     }
 
-    return self::$http;
+    return $defaultHeaders;
   }
 }
