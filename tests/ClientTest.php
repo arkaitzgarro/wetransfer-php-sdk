@@ -4,6 +4,7 @@ namespace WeTransfer;
 use InvalidArgumentException;
 
 use PHPUnit\Framework\TestCase;
+use WeTransfer\Http\ApiRequest;
 
 class ClientTest extends TestCase
 {
@@ -13,7 +14,7 @@ class ClientTest extends TestCase
   }
 
   public function testApiKeyValue() {
-    $this->assertEquals(Client::getApiKey(), 'secret-api-key');
+    $this->assertEquals(ApiRequest::getApiKey(), 'secret-api-key');
   }
 
   public function testEmptyApiKeyException() {

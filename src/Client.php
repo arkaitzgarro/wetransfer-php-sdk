@@ -3,24 +3,16 @@ namespace WeTransfer;
 
 use InvalidArgumentException;
 
+use WeTransfer\Http\ApiRequest;
+use WeTransfer\Auth;
+
 /**
  * The WeTransfer API client
  *
  * @package WeTransfer
  */
-class Client
+final class Client
 {
-  // @var string The WeTransfer API key to be used for requests.
-  private static $apiKey;
-
-  /**
-   * @return string The API key used for requests.
-   */
-  public static function getApiKey()
-  {
-    return self::$apiKey;
-  }
-
   /**
    * Sets the API key to be used for requests.
    *
@@ -32,6 +24,7 @@ class Client
       throw new InvalidArgumentException('API key value cannot be empty.');
     }
 
-    self::$apiKey = $apiKey;
+    ApiRequest::setApiKey($apiKey);
+    Auth::authorize();
   }
 }
