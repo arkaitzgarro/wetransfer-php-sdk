@@ -3,6 +3,7 @@ namespace WeTransfer\Api;
 
 use InvalidArgumentException;
 
+use WeTransfer\Entity\Transfer as TransferEntity;
 use WeTransfer\Http\ApiRequest;
 
 /**
@@ -21,13 +22,20 @@ class Transfer
   }
 
   /**
-   * Create a transfer
+   * Creates a new transfer given a name and a description
+   *
+   * @param string $name        Name of the transfer
+   * @param string $description Optional descritpion for the transfer
+   *
+   * @return TransferEntity $transfer
    */
   public function create($name, $description = '')
   {
-    return $this->api->request('POST', '/transfers', [
+    $response = $this->api->request('POST', '/transfers', [
       'name' => $name,
       'description' => $description
     ]);
+
+    return new TransferEntity($response);
   }
 }

@@ -8,6 +8,8 @@ use GuzzleHttp\ClientInterface;
 
 use WeTransfer\Api\Auth as AuthApi;
 use WeTransfer\Api\Transfer as TransferApi;
+use WeTransfer\Api\Items as ItemsApi;
+use WeTransfer\Entity\Transfer as TransferEntity;
 use WeTransfer\Http\ApiRequest;
 
 /**
@@ -26,11 +28,14 @@ class Client
   // @var WeTransfer\Api\Transfer Transfer API service
   private $transferApi;
 
+  // @var WeTransfer\Api\Items Items API service
+  private $itemsApi;
+
   // @var ClientInterface HTTP client used to make requests.
   private static $http;
 
   /**
-   * Sets the API key to be used for requests.
+   * Sets the API key to be used for requests, and initializes the SDK client
    *
    * @param string $apiKey
    */
@@ -47,11 +52,33 @@ class Client
     $this->authorize();
 
     $this->createTransferApi();
+    $this->createItemsApi();
   }
 
+  /**
+   * Creates a new transfer given a name and a description
+   *
+   * @param string $name        Name of the transfer
+   * @param string $description Optional descritpion for the transfer
+   *
+   * @return Transfer $transfer
+   */
   public function createTransfer($name, $description = '')
   {
     return $this->transferApi->create($name, $description);
+  }
+
+  /**
+   * Adds links to an existing transfer
+   *
+   * @param Transfer $transfer An existing transfer instance
+   * @param array    $links    A list of links to be added to the transfer
+   *
+   * @return Transfer $transfer
+   */
+  public function addLinks(TransferEntity $transfer, array $links = [])
+  {
+    return $this->itemsApi->addLinks($transfer, $links);
   }
 
   /**
@@ -67,6 +94,11 @@ class Client
   private function createTransferApi()
   {
     $this->transferApi = new TransferApi($this->api);
+  }
+
+  private function createItemsApi()
+  {
+    $this->itemsApi = new ItemsApi($this->api);
   }
 
   /**
