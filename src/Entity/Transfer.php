@@ -1,7 +1,7 @@
 <?php
 namespace WeTransfer\Entity;
 
-use WeTransfer\Entity\Link as LinkEntity;
+use WeTransfer\Entity\Abstracts\Item;
 
 class Transfer
 {
@@ -33,28 +33,32 @@ class Transfer
   /**
    * Get Transfer id.
    */
-  public function getId() {
+  public function getId()
+  {
     return $this->id;
   }
 
   /**
    * Get Transfer name.
    */
-  public function getName() {
+  public function getName()
+  {
     return $this->name;
   }
 
   /**
    * Get Transfer description.
    */
-  public function getDescription() {
+  public function getDescription()
+  {
     return $this->description;
   }
 
   /**
    * Get Transfer shortened URL.
    */
-  public function getShortenedUrl() {
+  public function getShortenedUrl()
+  {
     return $this->shortenedUrl;
   }
 
@@ -63,6 +67,40 @@ class Transfer
    */
   public function addLinks(array $links = [])
   {
-    array_push($this->items, $links);
+    $this->items = array_merge($this->items, $links);
+  }
+
+  /**
+   * Add files
+   */
+  public function addFiles(array $files = [])
+  {
+    $this->items = array_merge($this->items, $files);
+  }
+
+  /**
+   * Get links from items array
+   */
+  public function getLinks()
+  {
+    return array_filter($this->items, [$this, 'filterArrayLink']);
+  }
+
+  /**
+   * Get files from items array
+   */
+  public function getFiles()
+  {
+    return array_filter($this->items, [$this, 'filterArrayFile']);
+  }
+
+  private function filterArrayLink(Item $link)
+  {
+    return $link->getContentIdentifier() == 'web_content';
+  }
+
+  private function filterArrayFile($file)
+  {
+    return $file->getContentIdentifier() == 'file';
   }
 }

@@ -59,12 +59,23 @@ class ApiRequest
    *
    * @return array tuple containing (the JSON response, $options)
    */
-  public function request($method, $endpoint, $params = []) {
+  public function request($method, $endpoint, $params = null)
+  {
     $response = $this->http->request($method, self::API_BASE_URL . $endpoint, [
       'debug' => true,
       'headers' => $this->defaultHeaders(),
       'json' => $params
-      ]);
+    ]);
+
+    return json_decode($response->getBody(), true);
+  }
+
+  public function upload($method, $uploadUrl, $data)
+  {
+    $response = $this->http->request($method, $uploadUrl, [
+      'debug' => true,
+      'body' => $data
+    ]);
 
     return json_decode($response->getBody(), true);
   }

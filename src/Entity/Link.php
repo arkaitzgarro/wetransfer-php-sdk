@@ -1,11 +1,10 @@
 <?php
 namespace WeTransfer\Entity;
 
-class Link
-{
-  // @var string Link id.
-  private $id;
+use WeTransfer\Entity\Abstracts\Item;
 
+class Link extends Item
+{
   // @var object Link meta data.
   private $meta;
 
@@ -14,29 +13,26 @@ class Link
 
   public function __construct($link)
   {
-    $this->id = $link['id'];
+    parent::__construct($link);
+
     $this->meta = $link['meta'];
     $this->url = $link['url'];
-  }
-
-  /**
-   * Get Link id.
-   */
-  public function getId() {
-    return $this->id;
+    $this->contentIdentifier = 'web_content';
   }
 
   /**
    * Get Link meta.
    */
-  public function getMetadata() {
+  public function getMetadata()
+  {
     return $this->meta;
   }
 
   /**
    * Get Link url.
    */
-  public function getUrl() {
+  public function getUrl()
+  {
     return $this->url;
   }
 }

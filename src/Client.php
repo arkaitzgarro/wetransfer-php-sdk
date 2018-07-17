@@ -9,6 +9,7 @@ use GuzzleHttp\ClientInterface;
 use WeTransfer\Api\Auth as AuthApi;
 use WeTransfer\Api\Transfer as TransferApi;
 use WeTransfer\Api\Items as ItemsApi;
+use WeTransfer\Api\Files as FilesApi;
 use WeTransfer\Entity\Transfer as TransferEntity;
 use WeTransfer\Http\ApiRequest;
 
@@ -30,6 +31,9 @@ class Client
 
   // @var WeTransfer\Api\Items Items API service
   private $itemsApi;
+
+  // @var WeTransfer\Api\Files Files API service
+  private $filesApi;
 
   // @var ClientInterface HTTP client used to make requests.
   private static $http;
@@ -53,6 +57,7 @@ class Client
 
     $this->createTransferApi();
     $this->createItemsApi();
+    $this->createFilesApi();
   }
 
   /**
@@ -82,6 +87,19 @@ class Client
   }
 
   /**
+   * Adds files to an existing transfer
+   *
+   * @param Transfer $transfer An existing transfer instance
+   * @param array    $files    A list of files to be added to the transfer
+   *
+   * @return Transfer $transfer
+   */
+  public function addFiles(TransferEntity $transfer, array $files = [])
+  {
+    return $this->filesApi->addFiles($transfer, $files);
+  }
+
+  /**
    * Autorizes the API key and gets a JWT token
    */
   private function authorize()
@@ -99,6 +117,11 @@ class Client
   private function createItemsApi()
   {
     $this->itemsApi = new ItemsApi($this->api);
+  }
+
+  private function createFilesApi()
+  {
+    $this->filesApi = new FilesApi($this->api);
   }
 
   /**
