@@ -21,6 +21,14 @@ class Link extends Item
   }
 
   /**
+   * Get Link title.
+   */
+  public function getTitle()
+  {
+    return $this->meta['title'];
+  }
+
+  /**
    * Get Link meta.
    */
   public function getMetadata()

@@ -67,7 +67,7 @@ class File extends Item
    * Given a file resource, and the number of parts that must be uploaded to S3,
    * it chunkes the file and uploads each part sequentially. Completes the file upload at the end.
    *
-   *
+   * @param pointer $resource A pointer to a file created with fopen
    */
   public function upload($resource)
   {
@@ -79,6 +79,12 @@ class File extends Item
     $this->fileApi->completeUpload($this);
   }
 
+  /**
+   * Uploads a chunk of the file to S3
+   *
+   * @param string  $uploadUrl S3 upload URL
+   * @param pointer $resource  A pointer to a file created with fopen
+   */
   private function uploadPart($uploadUrl, $resource)
   {
     $content = fread($resource, self::MAX_CHUNK_SIZE);

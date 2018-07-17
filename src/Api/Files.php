@@ -27,8 +27,8 @@ class Files
   /**
    * Add files to an existing transfer.
    *
-   * @param TransferEntity $transfer Existing transfer object
-   * @param array          $files    A collection of files to be added to the transfer
+   * @param TransferEntity  $transfer Existing transfer object
+   * @param array           $files    A collection of files to be added to the transfer
    *
    * @return TransferEntity $transfer
    */
@@ -60,11 +60,22 @@ class Files
     return $response['upload_url'];
   }
 
+  /**
+   * Uploads a chunk of the file to S3
+   *
+   * @param string $uploadUrl S3 upload URL
+   * @param string $content   Content to upload
+   */
   public function uploadPart($uploadUrl, $content)
   {
-    return $this->api->upload('PUT', $uploadUrl, $content);
+    return $this->api->upload($uploadUrl, $content);
   }
 
+  /**
+   * Marks the file upload as completed
+   *
+   * @param FileEntity $file Existing file object
+   */
   public function completeUpload($file)
   {
     $fileId = $file->getId();

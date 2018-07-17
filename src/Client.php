@@ -8,7 +8,7 @@ use GuzzleHttp\ClientInterface;
 
 use WeTransfer\Api\Auth as AuthApi;
 use WeTransfer\Api\Transfer as TransferApi;
-use WeTransfer\Api\Items as ItemsApi;
+use WeTransfer\Api\Links as LinksApi;
 use WeTransfer\Api\Files as FilesApi;
 use WeTransfer\Entity\Transfer as TransferEntity;
 use WeTransfer\Http\ApiRequest;
@@ -29,8 +29,8 @@ class Client
   // @var WeTransfer\Api\Transfer Transfer API service
   private $transferApi;
 
-  // @var WeTransfer\Api\Items Items API service
-  private $itemsApi;
+  // @var WeTransfer\Api\Link Link API service
+  private $linksApi;
 
   // @var WeTransfer\Api\Files Files API service
   private $filesApi;
@@ -56,7 +56,7 @@ class Client
     $this->authorize();
 
     $this->createTransferApi();
-    $this->createItemsApi();
+    $this->createLinksApi();
     $this->createFilesApi();
   }
 
@@ -83,7 +83,7 @@ class Client
    */
   public function addLinks(TransferEntity $transfer, array $links = [])
   {
-    return $this->itemsApi->addLinks($transfer, $links);
+    return $this->linksApi->addLinks($transfer, $links);
   }
 
   /**
@@ -114,9 +114,9 @@ class Client
     $this->transferApi = new TransferApi($this->api);
   }
 
-  private function createItemsApi()
+  private function createLinksApi()
   {
-    $this->itemsApi = new ItemsApi($this->api);
+    $this->linksApi = new LinksApi($this->api);
   }
 
   private function createFilesApi()

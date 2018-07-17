@@ -10,11 +10,11 @@ use WeTransfer\Entity\Transfer as TransferEntity;
 use WeTransfer\Http\ApiRequest;
 
 /**
- * Items operations
+ * Links operations
  *
  * @package WeTransfer\Api
  */
-class Items
+class Links
 {
   // @var WeTransfer\Http\ApiRequest Request service
   private $api;

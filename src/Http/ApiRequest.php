@@ -1,6 +1,8 @@
 <?php
 namespace WeTransfer\Http;
 
+use InvalidArgumentException;
+
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 
@@ -62,7 +64,6 @@ class ApiRequest
   public function request($method, $endpoint, $params = null)
   {
     $response = $this->http->request($method, self::API_BASE_URL . $endpoint, [
-      'debug' => true,
       'headers' => $this->defaultHeaders(),
       'json' => $params
     ]);
@@ -70,10 +71,15 @@ class ApiRequest
     return json_decode($response->getBody(), true);
   }
 
-  public function upload($method, $uploadUrl, $data)
+  /**
+   * Upload some data to provided S3 URL
+   *
+   * @param string $uploadUrl S3 signed upload URL
+   * @param string $data      Data to upload
+   */
+  public function upload($uploadUrl, $data)
   {
-    $response = $this->http->request($method, $uploadUrl, [
-      'debug' => true,
+    $response = $this->http->request('PUT', $uploadUrl, [
       'body' => $data
     ]);
 

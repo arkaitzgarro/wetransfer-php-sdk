@@ -15,7 +15,6 @@ abstract class Item
   public function __construct($item)
   {
     $this->id = $item['id'];
-    $this->contentIdentifier = $item['content_identifier'];
     $this->localIdentifier = $item['local_identifier'];
   }
 
