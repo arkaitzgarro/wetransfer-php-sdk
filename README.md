@@ -23,9 +23,9 @@ You can find a complete working example [here](https://github.com/arkaitzgarro/w
 Firstly, the client needs to be configured with your API Key obtained from the WeTransfer's Developer.
 
 ```php
-use WeTransfer\Client;
+use WeTransfer\Client as WetransferClient;
 
-$client = new \WeTransfer\Client($_SERVER['WT_API_KEY']);
+$wtClient = new WetransferClient($_SERVER['WT_API_KEY']);
 ```
 
 ### Transfer
@@ -33,7 +33,7 @@ $client = new \WeTransfer\Client($_SERVER['WT_API_KEY']);
 Transfers can be created with or without items. Once the transfer has been created, items can be added at any time:
 
 ```php
-$transfer = $client->createTransfer('My Transfer', 'And optional description');
+$transfer = $wtClient->createTransfer('My Transfer', 'And optional description');
 ```
 
 ### Add items to a transfer
@@ -41,7 +41,7 @@ $transfer = $client->createTransfer('My Transfer', 'And optional description');
 Once a transfer has been created you can then add items (files or links) to it. If you are adding files to the transfer, the files are not uploaded at this point, but in the next step.
 
 ```php
-$client->addLinks($transfer, [
+$wtClient->addLinks($transfer, [
   [
     'url' => 'https://en.wikipedia.org/wiki/Japan',
     'meta' => [
@@ -50,7 +50,7 @@ $client->addLinks($transfer, [
   ]
 ]);
 
-$client->addFiles($transfer, [
+$wtClient->addFiles($transfer, [
   [
     'filename' => 'Japan-01.jpg',
     'filesize' => 13370099
