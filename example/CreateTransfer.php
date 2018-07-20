@@ -21,8 +21,13 @@ if (!$autoload) {
 
 require $autoload;
 
-$client = new \WeTransfer\Client($_SERVER['WT_API_KEY']);
+echo 'Authenticating...';
+$client = new \WeTransfer\Client(getenv('WT_API_KEY'));
+
+echo 'Creating a transfer...';
 $transfer = $client->createTransfer('Test transfer');
+
+echo 'Adding a link...';
 $transfer = $client->addLinks($transfer, [
   [
     'url' => 'https://en.wikipedia.org/wiki/Japan',
@@ -31,6 +36,8 @@ $transfer = $client->addLinks($transfer, [
     ]
   ]
 ]);
+
+echo 'Adding a file...';
 $transfer = $client->addFiles($transfer, [
   [
     'filename' => 'Japan-01.jpg',
@@ -38,6 +45,7 @@ $transfer = $client->addFiles($transfer, [
   ]
 ]);
 
+echo 'Uploading a file...';
 foreach($transfer->getFiles() as $file) {
   $file->upload(fopen(realpath('./example/files/Japan-01.jpg'), 'r'));
 }
