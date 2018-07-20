@@ -19,9 +19,11 @@
   ],
   "require": {
     "php": "^5.6|^7.0",
-    "guzzlehttp/guzzle": "^6.3"
+    "guzzlehttp/guzzle": "^6.3",
+    "ramsey/uuid": "^3.7"
   },
   "require-dev": {
+    "guzzle/plugin-mock": "^3.9",
     "phpunit/phpunit": "~5.0"
   },
   "autoload": {
@@ -31,7 +33,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "WeTransfer\\": "tests/"
+      "WeTransfer\\Test\\": "tests/"
     }
   },
   "bin": ["bin/wetransfer"]

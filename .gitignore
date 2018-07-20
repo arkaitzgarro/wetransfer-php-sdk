@@ -2,3 +2,6 @@
 
 # Componser
 /vendor/
+
+# Coverage
+build
