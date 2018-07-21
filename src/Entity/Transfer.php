@@ -6,101 +6,101 @@ use WeTransfer\Entity\Abstracts\Item;
 class Transfer
 {
   // @var string Transfer id.
-  private $id;
+    private $id;
 
   // @var string Transfer name.
-  private $name;
+    private $name;
 
   // @var string Transfer description.
-  private $description;
+    private $description;
 
   // @var string Transfer shortened URL.
-  private $shortenedUrl;
+    private $shortenedUrl;
 
   // @var array Transfer items: files and links.
-  private $items;
+    private $items;
 
-  public function __construct($transfer)
-  {
-    $this->id = $transfer['id'];
-    $this->name = $transfer['name'];
-    $this->description = $transfer['description'];
-    $this->shortenedUrl = $transfer['shortened_url'];
+    public function __construct($transfer)
+    {
+        $this->id = $transfer['id'];
+        $this->name = $transfer['name'];
+        $this->description = $transfer['description'];
+        $this->shortenedUrl = $transfer['shortened_url'];
 
-    $this->items = [];
-  }
+        $this->items = [];
+    }
 
   /**
    * Get Transfer id.
    */
-  public function getId()
-  {
-    return $this->id;
-  }
+    public function getId()
+    {
+        return $this->id;
+    }
 
   /**
    * Get Transfer name.
    */
-  public function getName()
-  {
-    return $this->name;
-  }
+    public function getName()
+    {
+        return $this->name;
+    }
 
   /**
    * Get Transfer description.
    */
-  public function getDescription()
-  {
-    return $this->description;
-  }
+    public function getDescription()
+    {
+        return $this->description;
+    }
 
   /**
    * Get Transfer shortened URL.
    */
-  public function getShortenedUrl()
-  {
-    return $this->shortenedUrl;
-  }
+    public function getShortenedUrl()
+    {
+        return $this->shortenedUrl;
+    }
 
   /**
    * Add links
    */
-  public function addLinks(array $links = [])
-  {
-    $this->items = array_merge($this->items, $links);
-  }
+    public function addLinks(array $links = [])
+    {
+        $this->items = array_merge($this->items, $links);
+    }
 
   /**
    * Add files
    */
-  public function addFiles(array $files = [])
-  {
-    $this->items = array_merge($this->items, $files);
-  }
+    public function addFiles(array $files = [])
+    {
+        $this->items = array_merge($this->items, $files);
+    }
 
   /**
    * Get links from items array
    */
-  public function getLinks()
-  {
-    return array_filter($this->items, [$this, 'filterArrayLink']);
-  }
+    public function getLinks()
+    {
+        return array_filter($this->items, [$this, 'filterArrayLink']);
+    }
 
   /**
    * Get files from items array
    */
-  public function getFiles()
-  {
-    return array_filter($this->items, [$this, 'filterArrayFile']);
-  }
+    public function getFiles()
+    {
+        return array_filter($this->items, [$this, 'filterArrayFile']);
+    }
 
-  private function filterArrayLink(Item $link)
-  {
-    return $link->getContentIdentifier() == 'web_content';
-  }
+    private function filterArrayLink(Item $link)
+    {
+        return $link->getContentIdentifier() == 'web_content';
+    }
 
-  private function filterArrayFile($file)
-  {
-    return $file->getContentIdentifier() == 'file';
-  }
+    private function filterArrayFile($file)
+    {
+        return $file->getContentIdentifier() == 'file';
+    }
 }

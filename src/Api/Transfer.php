@@ -14,12 +14,12 @@ use WeTransfer\Http\ApiRequest;
 class Transfer
 {
   // @var WeTransfer\Http\ApiRequest Request service
-  private $api;
+    private $api;
 
-  public function __construct(ApiRequest $api)
-  {
-    $this->api = $api;
-  }
+    public function __construct(ApiRequest $api)
+    {
+        $this->api = $api;
+    }
 
   /**
    * Creates a new transfer given a name and a description
@@ -29,13 +29,13 @@ class Transfer
    *
    * @return TransferEntity $transfer
    */
-  public function create($name, $description = '')
-  {
-    $response = $this->api->request('POST', '/transfers', [
-      'name' => $name,
-      'description' => $description
-    ]);
+    public function create($name, $description = '')
+    {
+        $response = $this->api->request('POST', '/transfers', [
+        'name' => $name,
+        'description' => $description
+        ]);
 
-    return new TransferEntity($response);
-  }
+        return new TransferEntity($response);
+    }
 }

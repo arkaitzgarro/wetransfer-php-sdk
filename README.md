@@ -94,3 +94,12 @@ Run the test suite:
 ```bash
 $ ./vendor/bin/phpunit
 ```
+
+Please adhere to [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standard. Run the following commands before pushing your code:
+
+```bash
+$ ./vendor/bin/phpcs --standard=PSR2 -n src tests
+
+# This command will automatically fix existing issues
+$ ./vendor/bin/phpcbf --standard=PSR2 -n src tests
+```
