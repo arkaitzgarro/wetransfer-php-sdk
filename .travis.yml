@@ -23,3 +23,6 @@ install: composer install --no-interaction --no-progress
 script:
   - vendor/bin/phpunit
   - php example/CreateTransfer.php
+
+after_success:
+  - php vendor/bin/php-coveralls -v

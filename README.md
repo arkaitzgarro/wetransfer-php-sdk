@@ -1,5 +1,7 @@
 # WeTransfer PHP SDK
 
+[![Coverage Status](https://coveralls.io/repos/github/arkaitzgarro/wetransfer-php-sdk/badge.svg?branch=master)](https://coveralls.io/github/arkaitzgarro/wetransfer-php-sdk?branch=master)
+
 A PHP SDK for WeTransfer's Public API
 
 ## Installation

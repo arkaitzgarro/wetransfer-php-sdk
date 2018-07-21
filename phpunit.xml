@@ -14,8 +14,11 @@
     </testsuite>
   </testsuites>
   <filter>
-    <blacklist>
-      <directory>./tests</directory>
-    </blacklist>
+    <whitelist>
+      <directory>./src</directory>
+    </whitelist>
   </filter>
+  <logging>
+    <log type="coverage-clover" target="build/logs/clover.xml"/>
+  </logging>
 </phpunit>
