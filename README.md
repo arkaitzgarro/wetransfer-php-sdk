@@ -1,5 +1,8 @@
 # WeTransfer PHP SDK
 
+[![Build Status](https://travis-ci.org/arkaitzgarro/wetransfer-php-sdk.svg?branch=master)](https://travis-ci.org/arkaitzgarro/wetransfer-php-sdk)
+[![Latest Stable Version](https://poser.pugx.org/wetransfer/php-sdk/v/stable)](https://packagist.org/packages/wetransfer/php-sdk)
+[![License](https://poser.pugx.org/wetransfer/php-sdk/license)](https://packagist.org/packages/wetransfer/php-sdk)
 [![Coverage Status](https://coveralls.io/repos/github/arkaitzgarro/wetransfer-php-sdk/badge.svg?branch=master)](https://coveralls.io/github/arkaitzgarro/wetransfer-php-sdk?branch=master)
 
 A PHP SDK for WeTransfer's Public API
