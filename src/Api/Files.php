@@ -17,12 +17,12 @@ use WeTransfer\Http\ApiRequest;
 class Files
 {
   // @var WeTransfer\Http\ApiRequest Request service
-  private $api;
+    private $api;
 
-  public function __construct(ApiRequest $api)
-  {
-    $this->api = $api;
-  }
+    public function __construct(ApiRequest $api)
+    {
+        $this->api = $api;
+    }
 
   /**
    * Add files to an existing transfer.
@@ -32,15 +32,15 @@ class Files
    *
    * @return TransferEntity $transfer
    */
-  public function addFiles(TransferEntity $transfer, array $files = [])
-  {
-    $transferId = $transfer->getId();
-    $response = $this->api->request('POST', "/transfers/{$transferId}/items", ['items' => $this->normalizeFutureFiles($files)]);
+    public function addFiles(TransferEntity $transfer, array $files = [])
+    {
+        $transferId = $transfer->getId();
+        $response = $this->api->request('POST', "/transfers/{$transferId}/items", ['items' => $this->normalizeFutureFiles($files)]);
 
-    $transfer->addFiles($this->normalizeRemoteFiles($response));
+        $transfer->addFiles($this->normalizeRemoteFiles($response));
 
-    return $transfer;
-  }
+        return $transfer;
+    }
 
   /**
    * Create a S3 upload URL for a given file and part number
@@ -50,15 +50,15 @@ class Files
    *
    * @return string                Upload URL
    */
-  public function createUploadUrl(FileEntity $file, $partNumber)
-  {
-    $fileId = $file->getId();
-    $multipartId = $file->getMultipartId();
+    public function createUploadUrl(FileEntity $file, $partNumber)
+    {
+        $fileId = $file->getId();
+        $multipartId = $file->getMultipartId();
 
-    $response = $this->api->request('GET', "/files/{$fileId}/uploads/{$partNumber}/{$multipartId}");
+        $response = $this->api->request('GET', "/files/{$fileId}/uploads/{$partNumber}/{$multipartId}");
 
-    return $response['upload_url'];
-  }
+        return $response['upload_url'];
+    }
 
   /**
    * Uploads a chunk of the file to S3
@@ -66,45 +66,45 @@ class Files
    * @param string $uploadUrl S3 upload URL
    * @param string $content   Content to upload
    */
-  public function uploadPart($uploadUrl, $content)
-  {
-    return $this->api->upload($uploadUrl, $content);
-  }
+    public function uploadPart($uploadUrl, $content)
+    {
+        return $this->api->upload($uploadUrl, $content);
+    }
 
   /**
    * Marks the file upload as completed
    *
    * @param FileEntity $file Existing file object
    */
-  public function completeUpload($file)
-  {
-    $fileId = $file->getId();
+    public function completeUpload($file)
+    {
+        $fileId = $file->getId();
 
-    return $this->api->request('POST', "/files/{$fileId}/uploads/complete");
-  }
+        return $this->api->request('POST', "/files/{$fileId}/uploads/complete");
+    }
 
-  private function normalizeFutureFiles(array $files = [])
-  {
-    return array_map([$this, 'mapFutureFile'], $files);
-  }
+    private function normalizeFutureFiles(array $files = [])
+    {
+        return array_map([$this, 'mapFutureFile'], $files);
+    }
 
-  private function mapFutureFile($file)
-  {
-    return [
-      'filename' => $file['filename'],
-      'filesize' => intval($file['filesize']),
-      'content_identifier' => 'file',
-      'local_identifier' => Uuid::uuid4()->toString()
-    ];
-  }
+    private function mapFutureFile($file)
+    {
+        return [
+        'filename' => $file['filename'],
+        'filesize' => intval($file['filesize']),
+        'content_identifier' => 'file',
+        'local_identifier' => Uuid::uuid4()->toString()
+        ];
+    }
 
-  private function normalizeRemoteFiles(array $files = [])
-  {
-    return array_map([$this, 'mapRemoteFile'], $files);
-  }
+    private function normalizeRemoteFiles(array $files = [])
+    {
+        return array_map([$this, 'mapRemoteFile'], $files);
+    }
 
-  private function mapRemoteFile($file)
-  {
-    return new FileEntity($file, $this);
-  }
+    private function mapRemoteFile($file)
+    {
+        return new FileEntity($file, $this);
+    }
 }

@@ -21,6 +21,7 @@ before_install:
 install: composer install --no-interaction --no-progress
 
 script:
+  - vendor/bin/phpcs --standard=PSR2 -n src tests
   - vendor/bin/phpunit
   - php example/CreateTransfer.php
 

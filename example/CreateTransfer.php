@@ -8,15 +8,15 @@ $autoloadFiles = [
 ];
 
 foreach ($autoloadFiles as $autoloadFile) {
-  if (file_exists($autoloadFile)) {
-    $autoload = $autoloadFile;
-    break;
-  }
+    if (file_exists($autoloadFile)) {
+        $autoload = $autoloadFile;
+        break;
+    }
 }
 
 if (!$autoload) {
-  echo "Autoload file not found; try 'composer dump-autoload' first." . PHP_EOL;
-  exit(1);
+    echo "Autoload file not found; try 'composer dump-autoload' first." . PHP_EOL;
+    exit(1);
 }
 
 require $autoload;
@@ -46,8 +46,8 @@ $transfer = $client->addFiles($transfer, [
 ]);
 
 echo 'Uploading a file...';
-foreach($transfer->getFiles() as $file) {
-  $file->upload(fopen(realpath('./example/files/Japan-01.jpg'), 'r'));
+foreach ($transfer->getFiles() as $file) {
+    $file->upload(fopen(realpath('./example/files/Japan-01.jpg'), 'r'));
 }
 
 echo "Transfer URL: {$transfer->getShortenedUrl()}";

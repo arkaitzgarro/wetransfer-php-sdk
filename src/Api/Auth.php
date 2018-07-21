@@ -13,18 +13,18 @@ use WeTransfer\Http\ApiRequest;
 class Auth
 {
   // @var WeTransfer\Http\ApiRequest Request service
-  private $api;
+    private $api;
 
-  public function __construct(ApiRequest $api)
-  {
-    $this->api = $api;
-  }
+    public function __construct(ApiRequest $api)
+    {
+        $this->api = $api;
+    }
 
   /**
    * Authorize the existing API key
    */
-  public function authorize()
-  {
-    return $this->api->request('POST', '/authorize');
-  }
+    public function authorize()
+    {
+        return $this->api->request('POST', '/authorize');
+    }
 }

@@ -14,43 +14,43 @@ use GuzzleHttp\ClientInterface;
 class ApiRequest
 {
   // @var string Actual version of the API.
-  const API_VERSION = 'v1';
+    const API_VERSION = 'v1';
 
   // @var string The WeTransfer API base path.
-  const API_BASE_URL = 'https://dev.wetransfer.com/' . self::API_VERSION;
+    const API_BASE_URL = 'https://dev.wetransfer.com/' . self::API_VERSION;
 
   // @var ClientInterface HTTP client.
-  private $http;
+    private $http;
 
   // @var string The WeTransfer API key to be used for requests.
-  private $apiKey;
+    private $apiKey;
 
   // @var string JWT token to be used for requests.
-  private $jwt;
+    private $jwt;
 
   /**
    * Sets the API key to be used for requests.
    *
    * @param string $apiKey
    */
-  public function setApiKey($apiKey)
-  {
-    $this->apiKey = $apiKey;
-  }
+    public function setApiKey($apiKey)
+    {
+        $this->apiKey = $apiKey;
+    }
 
   /**
    * Sets the JWT to be used for requests.
    *
    * @param string $jwt
    */
-  public function setJWT($jwt)
-  {
-    if(empty($jwt)) {
-      throw new InvalidArgumentException('JWT value cannot be empty.');
-    }
+    public function setJWT($jwt)
+    {
+        if (empty($jwt)) {
+            throw new InvalidArgumentException('JWT value cannot be empty.');
+        }
 
-    $this->jwt = $jwt;
-  }
+        $this->jwt = $jwt;
+    }
 
   /**
    * Makes an HTTP request to the API
@@ -61,15 +61,15 @@ class ApiRequest
    *
    * @return array tuple containing (the JSON response, $options)
    */
-  public function request($method, $endpoint, $params = null)
-  {
-    $response = $this->http->request($method, self::API_BASE_URL . $endpoint, [
-      'headers' => $this->defaultHeaders(),
-      'json' => $params
-    ]);
+    public function request($method, $endpoint, $params = null)
+    {
+        $response = $this->http->request($method, self::API_BASE_URL . $endpoint, [
+        'headers' => $this->defaultHeaders(),
+        'json' => $params
+        ]);
 
-    return json_decode($response->getBody(), true);
-  }
+        return json_decode($response->getBody(), true);
+    }
 
   /**
    * Upload some data to provided S3 URL
@@ -77,14 +77,14 @@ class ApiRequest
    * @param string $uploadUrl S3 signed upload URL
    * @param string $data      Data to upload
    */
-  public function upload($uploadUrl, $data)
-  {
-    $response = $this->http->request('PUT', $uploadUrl, [
-      'body' => $data
-    ]);
+    public function upload($uploadUrl, $data)
+    {
+        $response = $this->http->request('PUT', $uploadUrl, [
+        'body' => $data
+        ]);
 
-    return json_decode($response->getBody(), true);
-  }
+        return json_decode($response->getBody(), true);
+    }
 
   /**
    * Sets the client to be used for query the API endpoints
@@ -93,32 +93,32 @@ class ApiRequest
    *
    * @return $this
    */
-  public function setHttpClient(ClientInterface $http = null)
-  {
-    if ($http === null) {
-      $http = new Client();
-    }
+    public function setHttpClient(ClientInterface $http = null)
+    {
+        if ($http === null) {
+            $http = new Client();
+        }
 
-    $this->http = $http;
-    return $this;
-  }
+        $this->http = $http;
+        return $this;
+    }
 
   /**
    * Default headers for all HTTP requests
    *
    * @return array
    */
-  private function defaultHeaders()
-  {
-    $defaultHeaders = [
-      'x-api-key' => $this->apiKey,
-      'Content-Type' => 'application/json'
-    ];
+    private function defaultHeaders()
+    {
+        $defaultHeaders = [
+        'x-api-key' => $this->apiKey,
+        'Content-Type' => 'application/json'
+        ];
 
-    if ($this->jwt !== null) {
-      $defaultHeaders['Authorization'] = 'Bearer ' . $this->jwt;
+        if ($this->jwt !== null) {
+            $defaultHeaders['Authorization'] = 'Bearer ' . $this->jwt;
+        }
+
+        return $defaultHeaders;
     }
-
-    return $defaultHeaders;
-  }
 }
