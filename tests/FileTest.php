@@ -50,4 +50,15 @@ class FileTest extends TestCase
         $response = File::upload($file, fopen(realpath('./README.md'), 'r'));
         $this->assertEquals([], $response);
     }
+
+    public function testCreateUploadUrl()
+    {
+        // Get S3 upload url
+        $this->mockHandler->append(new \GuzzleHttp\Psr7\Response(200, [], json_encode([
+            'upload_url' => 's3://a-very-long-url'
+        ])));
+
+        $response = File::createUploadUrl('file-id', 'multipart-id', 1);
+        $this->assertEquals(['upload_url' => 's3://a-very-long-url'], $response);
+    }
 }

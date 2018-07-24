@@ -33,6 +33,7 @@ class ApiRequestTest extends TestCase
 
         $response = Api::request('GET', '/endpoint');
         $this->assertEquals(['key' => 'value'], $response);
+        $this->assertEquals('jwt', Api::getJWT());
     }
 
     public function testUpload()

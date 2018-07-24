@@ -73,6 +73,69 @@ foreach($transfer->getFiles() as $file) {
 }
 ```
 
+### Request an upload URL
+
+The previous steps work well for an environment where accessing the files directly is possible, like a CLI tool. In a web environment, we don't want to upload the files to the server, and from there, upload them to S3, but upload them directly from the client. `WeTransfer\File::createUploadUrl` method will create the necessary upload URL for a given part.
+
+```js
+// This code lives on the browser
+async function uploadFile(item, content) {
+  const MAX_CHUNK_SIZE = 6 * 1024 * 1024;
+  for (let partNumber = 0; partNumber < item.meta.multipart_parts; partNumber++) {
+    const chunkStart = partNumber * MAX_CHUNK_SIZE;
+    const chunkEnd = (partNumber + 1) * MAX_CHUNK_SIZE;
+
+    const multipartItem = await fetch('https://yourserver.com/create-upload-url', {
+      method: 'POST',
+      body: JSON.stringify({
+        file_id: item.id.
+        multipart_upload_id: item.meta.multipart_upload_id,
+        part_number: partNumber
+      })
+    });
+    
+    await fetch(multipartItem.upload_url, {
+      method: 'PUT',
+      body: content.slice(chunkStart, chunkEnd)
+    });
+  }
+};
+```
+
+```php
+// src/Controller/LuckyController.php
+namespace App\Controller;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+
+class FilesController
+{
+    /**
+     * @Route("/create-upload-url", name="app_create_upload_url", methods={"POST"})
+     */
+    public function createUploadUrl(Request $request)
+    {
+        $data = json_decode(
+            $request->getContent(),
+            true
+        );
+
+        $uploadUrl = WeTransfer\File::createUploadUrl(
+            $data['file_id'],
+            $data['multipart_upload_id'],
+            $data['part_number']
+        );
+
+        return new JsonResponse(
+            $uploadUrl,
+            JsonResponse::HTTP_CREATED
+        );
+    }
+}
+```
+
 ## Development
 
 Get Composer. Follow the instructions defined on the official [Composer page](https://getcomposer.org/doc/00-intro.md), or if you are using `homebrew`, just run:

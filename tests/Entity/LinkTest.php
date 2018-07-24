@@ -24,5 +24,6 @@ class LinkTest extends TestCase
         $this->assertEquals('local-identifier', $link->getLocalIdentifier());
         $this->assertEquals('WeTransfer', $link->getTitle());
         $this->assertEquals('https://wetransfer.com', $link->getUrl());
+        $this->assertEquals(['title' => 'WeTransfer'], $link->getMetaData());
     }
 }

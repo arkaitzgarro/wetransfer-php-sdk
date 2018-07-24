@@ -35,16 +35,14 @@ class Files
     /**
      * Create a S3 upload URL for a given file and part number
      *
-     * @param WeTransfer\Entity\File $file       Existing file object
-     * @param int                    $partNumber Which part number we want to upload
+     * @param string $fileId      Existing file identifier
+     * @param string $multipartId Existing file miltipart identifier
+     * @param int    $partNumber  Which part number we want to upload
      *
      * @return GuzzleHttp\Psr7\Response          Upload URL object
      */
-    public static function createUploadUrl(FileEntity $file, $partNumber)
+    public static function createUploadUrl($fileId, $multipartId, $partNumber)
     {
-        $fileId = $file->getId();
-        $multipartId = $file->getMultipartId();
-
         return Api::request('GET', "/files/{$fileId}/uploads/{$partNumber}/{$multipartId}");
     }
 
