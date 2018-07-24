@@ -3,8 +3,8 @@
 $autoload = null;
 
 $autoloadFiles = [
-  __DIR__ . '/../vendor/autoload.php',
-  __DIR__ . '/../../../autoload.php'
+    __DIR__ . '/../vendor/autoload.php',
+    __DIR__ . '/../../../autoload.php'
 ];
 
 foreach ($autoloadFiles as $autoloadFile) {
@@ -21,33 +21,33 @@ if (!$autoload) {
 
 require $autoload;
 
-echo 'Authenticating...';
-$client = new \WeTransfer\Client(getenv('WT_API_KEY'));
+echo "Authenticating...\n";
+WeTransfer\Client::setApiKey(getenv('WT_API_KEY'));
 
-echo 'Creating a transfer...';
-$transfer = $client->createTransfer('Test transfer');
+echo "Creating a transfer...\n";
+$transfer = WeTransfer\Transfer::create('Test transfer');
 
-echo 'Adding a link...';
-$transfer = $client->addLinks($transfer, [
-  [
-    'url' => 'https://en.wikipedia.org/wiki/Japan',
-    'meta' => [
-      'title' => 'Japan'
+echo "Adding a link...\n";
+$transfer = WeTransfer\Transfer::addLinks($transfer, [
+    [
+        'url' => 'https://en.wikipedia.org/wiki/Japan',
+        'meta' => [
+            'title' => 'Japan'
+        ]
     ]
-  ]
 ]);
 
-echo 'Adding a file...';
-$transfer = $client->addFiles($transfer, [
-  [
-    'filename' => 'Japan-01.jpg',
-    'filesize' => 13370099
-  ]
+echo "Adding a file...\n";
+$transfer = WeTransfer\Transfer::addFiles($transfer, [
+    [
+        'filename' => 'Japan-01.jpg',
+        'filesize' => 13370099
+    ]
 ]);
 
-echo 'Uploading a file...';
+echo "Uploading a file...\n";
 foreach ($transfer->getFiles() as $file) {
-    $file->upload(fopen(realpath('./example/files/Japan-01.jpg'), 'r'));
+    WeTransfer\File::upload($file, fopen(realpath('./example/files/Japan-01.jpg'), 'r'));
 }
 
-echo "Transfer URL: {$transfer->getShortenedUrl()}";
+echo "Transfer URL: {$transfer->getShortenedUrl()}\n";

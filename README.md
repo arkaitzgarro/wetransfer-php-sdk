@@ -28,9 +28,7 @@ You can find a complete working example [here](https://github.com/arkaitzgarro/w
 Firstly, the client needs to be configured with your API Key obtained from the WeTransfer's Developer.
 
 ```php
-use WeTransfer\Client as WetransferClient;
-
-$wtClient = new WetransferClient($_SERVER['WT_API_KEY']);
+$wtClient = WeTransfer\Client::setApiKey(getenv['WT_API_KEY']);
 ```
 
 ### Transfer
@@ -38,7 +36,7 @@ $wtClient = new WetransferClient($_SERVER['WT_API_KEY']);
 Transfers can be created with or without items. Once the transfer has been created, items can be added at any time:
 
 ```php
-$transfer = $wtClient->createTransfer('My Transfer', 'And optional description');
+$transfer = WeTransfer\Transfer::create('My Transfer', 'And optional description');
 ```
 
 ### Add items to a transfer
@@ -46,7 +44,7 @@ $transfer = $wtClient->createTransfer('My Transfer', 'And optional description')
 Once a transfer has been created you can then add items (files or links) to it. If you are adding files to the transfer, the files are not uploaded at this point, but in the next step.
 
 ```php
-$wtClient->addLinks($transfer, [
+WeTransfer\Transfer::addLinks($transfer, [
   [
     'url' => 'https://en.wikipedia.org/wiki/Japan',
     'meta' => [
@@ -55,7 +53,7 @@ $wtClient->addLinks($transfer, [
   ]
 ]);
 
-$wtClient->addFiles($transfer, [
+WeTransfer\Transfer::addFiles($transfer, [
   [
     'filename' => 'Japan-01.jpg',
     'filesize' => 13370099
@@ -71,7 +69,7 @@ Once the file has been added to the transfer, next step is to upload the file or
 
 ```php
 foreach($transfer->getFiles() as $file) {
-  $file->upload(fopen(realpath('./path/to/your/files.jpg'), 'r'));
+  WeTransfer\File::upload($file, fopen(realpath('./path/to/your/files.jpg'), 'r'));
 }
 ```
 

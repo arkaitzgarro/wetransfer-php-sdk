@@ -16,27 +16,27 @@ class TransferTest extends TestCase
     public function setUp()
     {
         $this->link = new Link([
-        'id' => 'random-id',
-        'content_identifier' => 'web_content',
-        'local_identifier' => 'local-identifier',
-        'url' => 'https://wetransfer.com',
-        'meta' => []
+            'id' => 'random-id',
+            'content_identifier' => 'web_content',
+            'local_identifier' => 'local-identifier',
+            'url' => 'https://wetransfer.com',
+            'meta' => []
         ]);
 
         $this->file = new File([
-        'id' => 'random-id',
-        'content_identifier' => 'file',
-        'local_identifier' => 'local-identifier',
-        'name' => 'file-name.txt',
-        'size' => 1024,
-        'meta' => []
+            'id' => 'random-id',
+            'content_identifier' => 'file',
+            'local_identifier' => 'local-identifier',
+            'name' => 'file-name.txt',
+            'size' => 1024,
+            'meta' => []
         ], null);
 
         $this->transfer = new Transfer([
-        'id' => 'random-id',
-        'name' => 'My Transfer',
-        'description' => '',
-        'shortened_url' => 'https://we.tl/random-hash',
+            'id' => 'random-id',
+            'name' => 'My Transfer',
+            'description' => '',
+            'shortened_url' => 'https://we.tl/random-hash',
         ]);
     }
 

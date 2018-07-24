@@ -10,13 +10,13 @@ class LinkTest extends TestCase
     public function testConstructor()
     {
         $link = new Link([
-        'id' => 'random-id',
-        'content_identifier' => 'web_content',
-        'local_identifier' => 'local-identifier',
-        'url' => 'https://wetransfer.com',
-        'meta' => [
-        'title' => 'WeTransfer'
-        ]
+            'id' => 'random-id',
+            'content_identifier' => 'web_content',
+            'local_identifier' => 'local-identifier',
+            'url' => 'https://wetransfer.com',
+            'meta' => [
+                'title' => 'WeTransfer'
+            ]
         ]);
 
         $this->assertEquals('random-id', $link->getId());
