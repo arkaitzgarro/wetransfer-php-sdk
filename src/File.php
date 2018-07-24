@@ -24,7 +24,7 @@ class File
     {
         for ($partNumber = 1; $partNumber <= $file->getNumberOfParts(); $partNumber++) {
             $uploadUrl = FilesApi::createUploadUrl($file, $partNumber);
-            self::uploadPart($uploadUrl, $resource);
+            self::uploadPart($uploadUrl['upload_url'], $resource);
         }
 
         return FilesApi::completeUpload($file);
@@ -39,6 +39,6 @@ class File
     private static function uploadPart($uploadUrl, $resource)
     {
         $content = fread($resource, self::MAX_CHUNK_SIZE);
-        FilesApi::uploadPart($uploadUrl['upload_url'], $content);
+        FilesApi::uploadPart($uploadUrl, $content);
     }
 }
