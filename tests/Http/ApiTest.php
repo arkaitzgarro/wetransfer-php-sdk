@@ -5,35 +5,33 @@ use InvalidArgumentException;
 
 use PHPUnit\Framework\TestCase;
 
-use WeTransfer\Http\ApiRequest;
+use WeTransfer\Http\Api;
 
 class ApiRequestTest extends TestCase
 {
     private $mockHandler;
-    private $api;
 
     public function setUp()
     {
         $this->mockHandler = new \GuzzleHttp\Handler\MockHandler();
         $httpClient = new \GuzzleHttp\Client([
-        'handler' => $this->mockHandler,
+            'handler' => $this->mockHandler,
         ]);
 
-        $this->api = new ApiRequest();
-        $this->api->setHttpClient($httpClient);
+        Api::setHttpClient($httpClient);
     }
 
     public function testJwtWithEmptyArgumentRaisesAnException()
     {
         $this->setExpectedException('\InvalidArgumentException');
-        $this->api->setJWT('');
+        Api::setJWT('');
     }
 
     public function testRequestWithoutParams()
     {
         $this->mockHandler->append(new \GuzzleHttp\Psr7\Response(200, [], '{"key": "value"}'));
 
-        $response = $this->api->request('GET', '/endpoint');
+        $response = Api::request('GET', '/endpoint');
         $this->assertEquals(['key' => 'value'], $response);
     }
 
@@ -41,7 +39,7 @@ class ApiRequestTest extends TestCase
     {
         $this->mockHandler->append(new \GuzzleHttp\Psr7\Response(200, [], '[]'));
 
-        $response = $this->api->upload('/endpoint', 'some-bytes');
+        $response = Api::upload('/endpoint', 'some-bytes');
         $this->assertEquals([], $response);
     }
 }

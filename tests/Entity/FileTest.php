@@ -12,15 +12,15 @@ class FileTest extends TestCase
     public function setup()
     {
         $this->file = new File([
-        'id' => 'random-id',
-        'content_identifier' => 'file',
-        'local_identifier' => 'local-identifier',
-        'name' => 'file-name.txt',
-        'size' => '1024',
-        'meta' => [
-        'multipart_parts' => 2,
-        'multipart_upload_id' => 'multipart-upload-id'
-        ]
+            'id' => 'random-id',
+            'content_identifier' => 'file',
+            'local_identifier' => 'local-identifier',
+            'name' => 'file-name.txt',
+            'size' => '1024',
+            'meta' => [
+                'multipart_parts' => 2,
+                'multipart_upload_id' => 'multipart-upload-id'
+            ]
         ], null);
     }
 

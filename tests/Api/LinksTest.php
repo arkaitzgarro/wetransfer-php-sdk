@@ -5,53 +5,49 @@ use PHPUnit\Framework\TestCase;
 
 use WeTransfer\Api\Links;
 use WeTransfer\Entity\Transfer;
-use WeTransfer\Http\ApiRequest;
+use WeTransfer\Http\Api;
 
 class LinksTest extends TestCase
 {
-    private $api;
     private $mockHandler;
 
     public function setup()
     {
         $this->mockHandler = new \GuzzleHttp\Handler\MockHandler();
         $httpClient = new \GuzzleHttp\Client([
-        'handler' => $this->mockHandler,
+            'handler' => $this->mockHandler,
         ]);
 
-        $http = new ApiRequest();
-        $http->setHttpClient($httpClient);
-
-        $this->api = new Links($http);
+        Api::setHttpClient($httpClient);
     }
 
     public function testAddLinks()
     {
         $this->mockHandler->append(new \GuzzleHttp\Psr7\Response(200, [], json_encode([
-        [
-        'id' => 'random-id',
-        'local_identifier' => 'local-identifier',
-        'url' => 'https://en.wikipedia.org/wiki/Japan',
-        'meta' => [
-          'title' => 'Japan'
-        ]
-        ]
+            [
+                'id' => 'random-id',
+                'local_identifier' => 'local-identifier',
+                'url' => 'https://en.wikipedia.org/wiki/Japan',
+                'meta' => [
+                    'title' => 'Japan'
+                ]
+            ]
         ])));
 
         $transfer = new Transfer([
-        'id' => 'random-id',
-        'name' => 'My Transfer',
-        'description' => '',
-        'shortened_url' => '',
+            'id' => 'random-id',
+            'name' => 'My Transfer',
+            'description' => '',
+            'shortened_url' => '',
         ]);
 
-        $response = $this->api->addLinks($transfer, [
-        [
-        'url' => 'https://en.wikipedia.org/wiki/Japan',
-        'meta' => [
-          'title' => 'Japan'
-        ]
-        ]
+        $response = Links::addLinks($transfer, [
+            [
+                'url' => 'https://en.wikipedia.org/wiki/Japan',
+                'meta' => [
+                    'title' => 'Japan'
+                ]
+            ]
         ]);
 
         $link = $transfer->getLinks()[0];

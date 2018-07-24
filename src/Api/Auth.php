@@ -1,9 +1,7 @@
 <?php
 namespace WeTransfer\Api;
 
-use InvalidArgumentException;
-
-use WeTransfer\Http\ApiRequest;
+use WeTransfer\Http\Api;
 
 /**
  * Authorize the API key
@@ -12,19 +10,13 @@ use WeTransfer\Http\ApiRequest;
  */
 class Auth
 {
-  // @var WeTransfer\Http\ApiRequest Request service
-    private $api;
-
-    public function __construct(ApiRequest $api)
+    /**
+     * Authorize the existing API key
+     *
+     * @return GuzzleHttp\Psr7\Response
+     */
+    public static function authorize()
     {
-        $this->api = $api;
-    }
-
-  /**
-   * Authorize the existing API key
-   */
-    public function authorize()
-    {
-        return $this->api->request('POST', '/authorize');
+        return Api::request('POST', '/authorize');
     }
 }

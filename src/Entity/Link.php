@@ -5,10 +5,10 @@ use WeTransfer\Entity\Abstracts\Item;
 
 class Link extends Item
 {
-  // @var object Link meta data.
+    // @var object Link meta data.
     private $meta;
 
-  // @var string Link target URL.
+    // @var string Link target URL.
     private $url;
 
     public function __construct($link)
@@ -20,25 +20,25 @@ class Link extends Item
         $this->contentIdentifier = 'web_content';
     }
 
-  /**
-   * Get Link title.
-   */
+    /**
+     * Get Link title.
+     */
     public function getTitle()
     {
         return $this->meta['title'];
     }
 
-  /**
-   * Get Link meta.
-   */
+    /**
+     * Get Link meta.
+     */
     public function getMetadata()
     {
         return $this->meta;
     }
 
-  /**
-   * Get Link url.
-   */
+    /**
+     * Get Link url.
+     */
     public function getUrl()
     {
         return $this->url;
