@@ -19,15 +19,31 @@ class File
      *
      * @param File    $file     A file entity object
      * @param pointer $resource A pointer to a file created with fopen
+     *
+     * @return GuzzleHttp\Psr7\Response
      */
     public static function upload(FileEntity $file, $resource)
     {
         for ($partNumber = 1; $partNumber <= $file->getNumberOfParts(); $partNumber++) {
-            $uploadUrl = FilesApi::createUploadUrl($file, $partNumber);
+            $uploadUrl = FilesApi::createUploadUrl($file->getId(), $file->getMultipartId(), $partNumber);
             self::uploadPart($uploadUrl['upload_url'], $resource);
         }
 
         return FilesApi::completeUpload($file);
+    }
+
+    /**
+     * Create a S3 upload URL for a given file and part number
+     *
+     * @param string $fileId      Existing file identifier
+     * @param string $multipartId Existing file miltipart identifier
+     * @param int    $partNumber  Which part number we want to upload
+     *
+     * @return GuzzleHttp\Psr7\Response          Upload URL object
+     */
+    public static function createUploadUrl($fileId, $multipartId, $partNumber)
+    {
+        return FilesApi::createUploadUrl($fileId, $multipartId, $partNumber);
     }
 
     /**
