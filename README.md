@@ -16,7 +16,7 @@ System Requirements
 The WeTransfer PHP SDK can be installed through Composer.
 
 ```bash
-$ php composer require arkaitzgarro/wetransfer-php-sdk
+$ composer require wetransfer/php-sdk
 ```
 
 ## Usage
@@ -24,6 +24,15 @@ $ php composer require arkaitzgarro/wetransfer-php-sdk
 In order to be able to use the SDK and access our public APIs, you must provide an API key, which is available in our [Developers Portal](https://developers.wetransfer.com/).
 
 You can find a complete working example [here](https://github.com/arkaitzgarro/wetransfer-php-sdk/blob/master/example/CreateTransfer.php).
+
+If you are not using an automatic class loader within your project, you will need to load the dependency manually:
+
+```php
+<?php
+require __DIR__ . '/vendor/autoload.php';
+
+// At this point, you can start using the SDK. Keep reading!
+```
 
 Firstly, the client needs to be configured with your API Key obtained from the WeTransfer's Developer.
 
