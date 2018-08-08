@@ -1,9 +1,11 @@
 <?php
 namespace WeTransfer\Entity;
 
+use JsonSerializable;
+
 use WeTransfer\Entity\Abstracts\Item;
 
-class File extends Item
+class File extends Item implements JsonSerializable
 {
     // @var object File name.
     private $name;
@@ -54,5 +56,18 @@ class File extends Item
     public function getMultipartId()
     {
         return $this->meta['multipart_upload_id'];
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'   => $this->getId(),
+            'name' => $this->getName(),
+            'size' => $this->getSize(),
+            'meta' => [
+                'multipart_parts' => $this->getNumberOfParts(),
+                'multipart_upload_id' => $this->getMultipartId()
+            ]
+        ];
     }
 }

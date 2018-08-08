@@ -20,7 +20,9 @@ class TransferTest extends TestCase
             'content_identifier' => 'web_content',
             'local_identifier' => 'local-identifier',
             'url' => 'https://wetransfer.com',
-            'meta' => []
+            'meta' => [
+                'title' => 'WeTransfer'
+            ]
         ]);
 
         $this->file = new File([
@@ -29,7 +31,10 @@ class TransferTest extends TestCase
             'local_identifier' => 'local-identifier',
             'name' => 'file-name.txt',
             'size' => 1024,
-            'meta' => []
+            'meta' => [
+                'multipart_parts' => 1,
+                'multipart_upload_id' => 'random_upload_id',
+            ]
         ], null);
 
         $this->transfer = new Transfer([
@@ -62,5 +67,31 @@ class TransferTest extends TestCase
         $this->transfer->addFiles([$this->file]);
         $this->assertEquals(1, count($this->transfer->getFiles()));
         $this->assertEquals(0, count($this->transfer->getLinks()));
+    }
+
+    public function testJsonOutput()
+    {
+        $this->assertJsonStringEqualsJsonString(
+            '{"id":"random-id","name":"My Transfer","description":"","shortened_url":"https://we.tl/random-hash","links":"[]","files":"[]"}',
+            json_encode($this->transfer)
+        );
+    }
+
+    public function testJsonOutputWithLinks()
+    {
+        $this->transfer->addLinks([$this->link]);
+        $this->assertJsonStringEqualsJsonString(
+            '{"id":"random-id","name":"My Transfer","description":"","shortened_url":"https://we.tl\/random-hash","links":"[{\"id\":\"random-id\",\"url\":\"https:\\\/\\\/wetransfer.com\",\"meta\":{\"title\":\"WeTransfer\"}}]","files":"[]"}',
+            json_encode($this->transfer)
+        );
+    }
+
+    public function testJsonOutputWithFiles()
+    {
+        $this->transfer->addFiles([$this->file]);
+        $this->assertJsonStringEqualsJsonString(
+            '{"id":"random-id","name":"My Transfer","description":"","shortened_url":"https:\/\/we.tl\/random-hash","links":"[]","files":"[{\"id\":\"random-id\",\"name\":\"file-name.txt\",\"size\":1024,\"meta\":{\"multipart_parts\":1,\"multipart_upload_id\":\"random_upload_id\"}}]"}',
+            json_encode($this->transfer)
+        );
     }
 }

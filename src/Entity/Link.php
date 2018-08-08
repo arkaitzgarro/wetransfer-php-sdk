@@ -1,9 +1,11 @@
 <?php
 namespace WeTransfer\Entity;
 
+use JsonSerializable;
+
 use WeTransfer\Entity\Abstracts\Item;
 
-class Link extends Item
+class Link extends Item implements JsonSerializable
 {
     // @var object Link meta data.
     private $meta;
@@ -42,5 +44,16 @@ class Link extends Item
     public function getUrl()
     {
         return $this->url;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'   => $this->getId(),
+            'url' => $this->getUrl(),
+            'meta' => [
+                'title' => $this->getTitle()
+            ]
+        ];
     }
 }

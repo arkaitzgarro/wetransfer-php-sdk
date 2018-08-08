@@ -1,9 +1,11 @@
 <?php
 namespace WeTransfer\Entity;
 
+use JsonSerializable;
+
 use WeTransfer\Entity\Abstracts\Item;
 
-class Transfer
+class Transfer implements JsonSerializable
 {
     // @var string Transfer id.
     private $id;
@@ -102,5 +104,17 @@ class Transfer
     private function filterArrayFile(Item $file)
     {
         return $file->getContentIdentifier() == 'file';
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id'   => $this->getId(),
+            'name' => $this->getName(),
+            'description' => $this->getDescription(),
+            'shortened_url' => $this->getShortenedUrl(),
+            'links' => json_encode($this->getLinks()),
+            'files' => json_encode($this->getFiles())
+        ];
     }
 }

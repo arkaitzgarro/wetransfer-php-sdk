@@ -33,4 +33,12 @@ class FileTest extends TestCase
         $this->assertEquals(2, $this->file->getNumberOfParts());
         $this->assertEquals('multipart-upload-id', $this->file->getMultipartId());
     }
+
+    public function testJsonOutput()
+    {
+        $this->assertJsonStringEqualsJsonString(
+            '{"id":"random-id","name":"file-name.txt","size":"1024","meta":{"multipart_parts":2,"multipart_upload_id":"multipart-upload-id"}}',
+            json_encode($this->file)
+        );
+    }
 }

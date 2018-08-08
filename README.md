@@ -13,10 +13,16 @@ System Requirements
 - PHP 5.6.4 or greater
 - Composer
 
-The WeTransfer PHP SDK can be installed through Composer.
+The WeTransfer PHP SDK can be installed through [Composer](https://getcomposer.org/doc/00-intro.md). If Composer is available globally, run the following command in your project directory:
 
 ```bash
 $ composer require wetransfer/php-sdk
+```
+
+Or if Composer has been installed locally in your project, run the following command:
+
+```bash
+$ php composer.phar require wetransfer/php-sdk
 ```
 
 ## Usage
@@ -25,27 +31,62 @@ In order to be able to use the SDK and access our public APIs, you must provide 
 
 You can find a complete working example [here](https://github.com/arkaitzgarro/wetransfer-php-sdk/blob/master/example/CreateTransfer.php).
 
-If you are not using an automatic class loader within your project, you will need to load the dependency manually:
+If you are not using an automatic class loader within your project, you will need to load the SDK manually at the beginning of each php script, like that:
 
 ```php
 <?php
+// This can be your index.php, for example.
 require __DIR__ . '/vendor/autoload.php';
 
 // At this point, you can start using the SDK. Keep reading!
 ```
 
-Firstly, the client needs to be configured with your API Key obtained from the WeTransfer's Developer.
+Firstly, the client needs to be configured with your API Key obtained from the WeTransfer's Developer. We recommend to set your API Key as an environment variable, but this will depend on how your application has been configured.
 
 ```php
-$wtClient = WeTransfer\Client::setApiKey(getenv['WT_API_KEY']);
+// Read the API Key value from the environment, using 
+$wtClient = WeTransfer\Client::setApiKey(getenv('WT_API_KEY'));
+
+// Or include it directly on your source code.
+// Be careful not sharing your API key, it is suppose to be private.
+$WT_API_KEY='your private key goes here';
+$wtClient = WeTransfer\Client::setApiKey($WT_API_KEY);
 ```
 
 ### Transfer
 
-Transfers can be created with or without items. Once the transfer has been created, items can be added at any time:
+Transfers can be created with or without items. Once the transfer has been created, items can be added at any time. Using plain PHP, you will read this variables from `$_POST`, most probably:
 
 ```php
-$transfer = WeTransfer\Transfer::create('My Transfer', 'And optional description');
+$name = $_POST['transfer_name'];
+$description = $_POST['transfer_description'];
+
+$transfer = WeTransfer\Transfer::create($name, $description);
+```
+
+Or access the request object if you are using a framework like Symfony:
+
+```php
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+class SampleController extends Controller
+{
+    public function indexAction(Request $request) {
+        $name = $request->request->get('transfer_name');
+        $description = $request->request->get('transfer_description');
+        $transfer = WeTransfer\Transfer::create($name, $description);
+
+        // You will need to save the transfer->getId() value to access the transfer in the future.
+        // Use a data base, the session or return it to the client
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($transfer);
+        $entityManager->flush();
+
+        return new JsonResponse($transfer);
+    }
+
+}
 ```
 
 ### Add items to a transfer
